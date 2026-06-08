@@ -1,0 +1,36 @@
+Title: Short, descriptive post title
+Date: 2026-06-08 12:00
+Slug: short-descriptive-post-title
+Author: Argus
+Category: Notes
+Tags: engineering, security
+Summary: One- or two-sentence summary shown in the post list on the homepage.
+
+## Section heading
+
+Write the post in plain Markdown. Headings, lists, code blocks, tables, and
+links all work out of the box.
+
+```python
+print("code blocks are styled by the theme")
+```
+
+## Another section
+
+More content.
+
+<!--
+HOW TO ADD A NEW POST
+=====================
+1. Copy this file into content/posts/ and rename it, e.g.
+   welcome-to-the-argus-blog.md
+2. Fill in the metadata block at the top. Required: Title, Date.
+   Everything else is optional and only shown if present.
+   - Author:   shown as a chip on the homepage and in the post header
+   - Category: free text, e.g. Engineering / Security / Product (shown as a pill)
+   - Tags:     comma-separated; each becomes a clickable #tag
+   - Do NOT use a field called "Status:" — Pelican reserves it for draft/publish.
+   - To keep a post as an unpublished draft, add a line:  Status: draft
+3. Rebuild:  uv run pelican content      (or  uv run pelican --autoreload --listen
+   for a live-reloading preview at http://localhost:8000)
+-->
