@@ -82,7 +82,59 @@ Full database write on a monitoring server is about as high as impact gets, beca
 
 ## The fix
 
-Escape `access_token` and `refresh_token` with `zbx_db_dyn_escape_string()` before they are passed to `zbx_db_execute()` in `oauth_db_update()`, in both the `if` and `else` branches at lines 301 to 307 and 311 to 317. This is the same function the rest of the database layer already uses.
+Escape `access_token` and `refresh_token` with `zbx_db_dyn_escape_string()` before they are passed to `zbx_db_execute()` in `oauth_db_update()`, in both the `if` and `else` branches at lines 301 to 307 and 311 to 317. This is the same function the rest of the database layer already uses:
+
+```c
+diff --git a/src/libs/zbxalerter/oauth.c b/src/libs/zbxalerter/oauth.c
+index dadca8f..b008c49 100644
+--- a/src/libs/zbxalerter/oauth.c
++++ b/src/libs/zbxalerter/oauth.c
+@@ -294,17 +294,29 @@ static void       oauth_db_update(zbx_uint64_t mediatypeid, zbx_oauth_data_t *data, in
+        }
+        else
+        {
++               char    *access_token_esc;
++
+                data->tokens_status |= (ZBX_OAUTH_TOKEN_ACCESS_VALID | ZBX_OAUTH_TOKEN_REFRESH_VALID);
+ 
++               /* access_token and refresh_token originate from the external OAuth server response, */
++               /* so they must be escaped before being interpolated into the SQL statement */
++               access_token_esc = zbx_db_dyn_escape_string(data->access_token);
++
+                if (NULL != data->old_refresh_token)     /* data->refresh_token has changed */
+                {
++                       char    *refresh_token_esc;
++
++                       refresh_token_esc = zbx_db_dyn_escape_string(data->refresh_token);
++
+                        zbx_db_execute("update media_type_oauth set"
+                                        " access_token='%s',access_token_updated=" ZBX_FS_TIME_T ","
+                                        "access_expires_in=%d,refresh_token='%s',tokens_status=%hhu"
+                                        " where mediatypeid="ZBX_FS_UI64,
+-                                       data->access_token, data->access_token_updated, data->access_expires_in,
+-                                       data->refresh_token, data->tokens_status,
++                                       access_token_esc, data->access_token_updated, data->access_expires_in,
++                                       refresh_token_esc, data->tokens_status,
+                                        mediatypeid);
++
++                       zbx_free(refresh_token_esc);
+                }
+                else
+                {
+@@ -312,10 +324,12 @@ static void       oauth_db_update(zbx_uint64_t mediatypeid, zbx_oauth_data_t *data, in
+                                        " access_token='%s',access_token_updated=" ZBX_FS_TIME_T ","
+                                        "access_expires_in=%d,tokens_status=%hhu"
+                                        " where mediatypeid="ZBX_FS_UI64,
+-                                       data->access_token, data->access_token_updated, data->access_expires_in,
++                                       access_token_esc, data->access_token_updated, data->access_expires_in,
+                                        data->tokens_status,
+                                        mediatypeid);
+                }
++
++               zbx_free(access_token_esc);
+        }
+ }
+```
 
 ## Closing remarks
 
