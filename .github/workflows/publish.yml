@@ -33,7 +33,7 @@ jobs:
         env:
           # Derives the canonical URL from the repo: https://<owner>.github.io/<repo>
           # Override by setting a repository variable SITEURL if you use a custom domain.
-          SITEURL: ${{ vars.SITEURL || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
+                    SITEURL: ${{ vars.SITEURL || 'https://blog.argus-systems.ai' }}
         run: |
           uv run pelican content --settings publishconf.py
 
