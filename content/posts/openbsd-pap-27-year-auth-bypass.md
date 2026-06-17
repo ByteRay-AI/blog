@@ -87,4 +87,4 @@ PAP_ACK received with empty credentials
 - 1999-07-01 — sppp code with vulnerable `bcmp` comparison imported into OpenBSD from FreeBSD
 - 2009-02-16 — Auth fields changed to dynamic allocation with `AUTHMAXLEN`, enabling heap over-read
 - 2026-06-12 — Reported to OpenBSD with proof of concept
-- 2026-06-14 — Fix committed by mvs
+- 2026-06-14 — Fix committed by mvs (CVE-2026-55706)
