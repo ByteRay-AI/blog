@@ -1,5 +1,5 @@
-AUTHOR = "Argus"
-SITENAME = "Argus Blog"
+AUTHOR = "ByteRay"
+SITENAME = "ByteRay Blog"
 SITESUBTITLE = "Security and engineering"
 SITEURL = ""
 
