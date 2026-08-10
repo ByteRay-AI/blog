@@ -143,3 +143,7 @@ We reported this vulnerability in good faith, providing a fully functional proof
 We disagree. Their reasoning treats the privilege to *choose* an endpoint as the privilege to *control* that endpoint's responses.
 
 *Affected version: Zabbix 8.0.0beta2, commit `31eccf9ddaf7adf129f9cd611c85b7451b188eb9`.*
+
+## Update — 2026-08-10
+
+The original writeup listed only Zabbix 8.0.0beta2, the version we tested against. The vulnerable code path was introduced with OAuth support for email media types in 7.4.0, and the unescaped `zbx_db_execute()` is present in every released `7.4.x` tag through `7.4.11`. It was fixed in `7.4.12`, released 9 July 2026, by commit `05067f4` — which applies the same zbx_db_dyn_escape_string() change recommended above. No advisory, security note, or CVE accompanied the release.
