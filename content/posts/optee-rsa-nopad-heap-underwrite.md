@@ -242,6 +242,6 @@ All three were reported to the OP-TEE project with proof-of-concept code, with f
 
 ## References
 
-- [OP-TEE #7898: crypto: rsa: reject RSA NOPAD input longer than the modulus](https://github.com/OP-TEE/optee_os/pull/7898)
-- [OP-TEE #7899: core: pta: widevine: reject a NULL calling session in open_session](https://github.com/OP-TEE/optee_os/pull/7899)
-- [OP-TEE #7900: core: ldelf: reject TA_FLAG_CONCURRENT for user TAs](https://github.com/OP-TEE/optee_os/pull/7900)
+- CVE-2026-71969, [OP-TEE #7898: crypto: rsa: reject RSA NOPAD input longer than the modulus](https://github.com/OP-TEE/optee_os/pull/7898)
+- CVE-2026-71967, [OP-TEE #7899: core: pta: widevine: reject a NULL calling session in open_session](https://github.com/OP-TEE/optee_os/pull/7899)
+- CVE-2026-71968, [OP-TEE #7900: core: ldelf: reject TA_FLAG_CONCURRENT for user TAs](https://github.com/OP-TEE/optee_os/pull/7900)
