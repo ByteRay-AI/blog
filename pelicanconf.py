@@ -41,5 +41,19 @@ SOCIAL = ()
 
 DEFAULT_PAGINATION = 25
 
+# --- Call to action at the end of every post ------------------------------
+# Rendered by themes/argus/templates/article.html. Remove CTA_TITLE to hide it.
+# Feature icons: shield, radar, list, bell, bug, patch.
+CTA_TITLE = "Want this run against your code?"
+CTA_TEXT = (
+    "Attackers now weaponize AI to probe your systems nonstop. ByteRay turns that "
+    "same power to your advantage, autonomously uncovering, verifying, and "
+    "remediating real attack paths across code, binaries, services, and production "
+    "environments."
+)
+CTA_FEATURES = ()
+CTA_BUTTON_LABEL = "Talk to us"
+CTA_BUTTON_URL = "https://byteray.co.uk/talk-to-us"
+
 # Uncomment following line if you want document-relative URLs when developing
 # RELATIVE_URLS = True

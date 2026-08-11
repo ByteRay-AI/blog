@@ -336,6 +336,124 @@ a.chip:hover { color: var(--text); border-color: var(--line-strong); }
 .site-footer .mark img { width: 22px; height: 22px; object-fit: contain; }
 
 /* ============================================================
+   End-of-post call to action
+   ============================================================ */
+.cta {
+  border-top: 1px solid var(--line);
+  background:
+    radial-gradient(circle at 50% -10%, rgba(41, 171, 226, 0.14), transparent 26rem),
+    rgba(7, 18, 21, 0.55);
+  padding: 72px 0 80px;
+  text-align: center;
+}
+
+.cta .container { max-width: 1000px; }
+
+.cta-mark {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 26px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 16px;
+  background: rgba(41, 171, 226, 0.08);
+  box-shadow: var(--glow);
+}
+
+.cta-mark svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cta h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0 0 16px;
+}
+
+.cta-lede {
+  max-width: 82ch;
+  margin: 0 auto;
+  color: var(--text-soft);
+  font-size: 1.02rem;
+}
+
+.cta-features {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px 44px;
+  margin: 46px 0 40px;
+  text-align: left;
+}
+
+.cta-feature {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  align-items: start;
+}
+
+.cta-icon {
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cta-feature h3 {
+  grid-column: 2;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.cta-feature p {
+  grid-column: 2;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.93rem;
+  line-height: 1.6;
+}
+
+/* keeps the button off the lede when no features are configured */
+.cta-lede + .cta-btn { margin-top: 52px; }
+
+.cta-btn {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  padding: 13px 30px;
+  border-radius: 12px;
+  border: 1px solid var(--line-strong);
+  background: linear-gradient(180deg, rgba(41, 171, 226, 0.22), rgba(31, 116, 230, 0.24));
+  box-shadow: var(--glow);
+  transition: transform .2s var(--easing), border-color .2s var(--easing), background .2s var(--easing);
+}
+
+.cta-btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+  background: linear-gradient(180deg, rgba(41, 171, 226, 0.32), rgba(31, 116, 230, 0.34));
+}
+
+/* ============================================================
    Responsive
    ============================================================ */
 @media (max-width: 720px) {
@@ -347,4 +465,6 @@ a.chip:hover { color: var(--text); border-color: var(--line-strong); }
   .facts { grid-template-columns: 1fr; gap: 4px 0; }
   .facts dt { margin-top: 10px; }
   .hero { padding: 150px 0 64px; }
+  .cta { padding: 56px 0 60px; }
+  .cta-features { grid-template-columns: 1fr; gap: 24px; margin: 34px 0 32px; }
 }
