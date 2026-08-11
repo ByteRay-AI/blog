@@ -43,7 +43,11 @@
 <section class="cta">
     <div class="container">
         <div class="cta-mark" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M12 3 5 5.6v5.9c0 4.4 2.9 7.9 7 9.1 4.1-1.2 7-4.7 7-9.1V5.6L12 3Z"/><path d="m9 12 2 2 4-4.5"/></svg>
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor"
+                 stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3 5 5.6v5.9c0 4.4 2.9 7.9 7 9.1 4.1-1.2 7-4.7 7-9.1V5.6L12 3Z"/>
+                <path d="m9 12 2 2 4-4.5"/>
+            </svg>
         </div>
 
         <h2>{{ CTA_TITLE }}</h2>
@@ -53,7 +57,9 @@
         <div class="cta-features">
             {% for feature in CTA_FEATURES %}
             <div class="cta-feature">
-                <svg class="cta-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <svg class="cta-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"
+                     fill="none" stroke="currentColor" stroke-width="1.6"
+                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="{{ icons.get(feature.icon, icons['shield']) }}"/>
                 </svg>
                 <h3>{{ feature.title }}</h3>

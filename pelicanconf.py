@@ -15,6 +15,15 @@ DEFAULT_LANG = "en"
 # --- Custom theme ---------------------------------------------------------
 THEME = "themes/argus"
 
+# Content hash of the stylesheet, appended to its URL in base.html. GitHub Pages
+# serves static files with a 4 hour cache, so without this a CSS change keeps
+# showing the old file until the cache expires.
+import hashlib
+import pathlib
+
+_style = pathlib.Path(__file__).parent / THEME / "static/css/style.css"
+CSS_VERSION = hashlib.sha256(_style.read_bytes()).hexdigest()[:10]
+
 # Clean URLs for each post, e.g. /blog/welcome-to-argus-blog.html
 ARTICLE_URL = "blog/{slug}.html"
 ARTICLE_SAVE_AS = "blog/{slug}.html"
