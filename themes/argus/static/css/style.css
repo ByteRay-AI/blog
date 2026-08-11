@@ -340,12 +340,19 @@ a.chip:hover { color: var(--text); border-color: var(--line-strong); }
    ============================================================ */
 .cta {
   border-top: 1px solid var(--line);
+  /* the panel tint fades out downwards so it meets the footer without an edge */
   background:
     radial-gradient(circle at 50% -10%, rgba(41, 171, 226, 0.14), transparent 26rem),
-    rgba(7, 18, 21, 0.55);
-  padding: 72px 0 80px;
+    linear-gradient(180deg,
+      rgba(7, 18, 21, 0.72) 0%,
+      rgba(7, 18, 21, 0.42) 48%,
+      rgba(7, 18, 21, 0) 100%);
+  padding: 72px 0 96px;
   text-align: center;
 }
+
+/* no gap between the fade and the footer rule */
+.cta + .site-footer { margin-top: 0; }
 
 .cta .container { max-width: 1000px; }
 
