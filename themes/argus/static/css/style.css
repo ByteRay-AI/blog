@@ -1,39 +1,40 @@
-/* ============================================================
-   ByteRay Blog
-   Visual language matched to byteray.co.uk (ByteRay)
-   Dark, glassy panels, cyan accent + glow, monospace detailing.
-   ============================================================ */
-
+/* ByteRay's paper, ocean-blue typography, and restrained editorial layout. */
+@font-face {
+  font-family: "Manrope"; font-style: normal; font-weight: 200 800;
+  font-display: swap; src: url("../fonts/manrope-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Newsreader"; font-style: normal; font-weight: 200 800;
+  font-display: swap; src: url("../fonts/newsreader-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono"; font-style: normal; font-weight: 400;
+  font-display: swap; src: url("../fonts/ibm-plex-mono-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Cyberform"; font-style: normal; font-weight: 400;
+  font-display: swap; src: url("../fonts/cyberform.otf") format("opentype");
+}
 :root {
-  /* Surfaces (ByteRay palette) */
-  --bg:            #030a0d;
-  --bg-elevated:   #071215;
-  --bg-panel:      rgba(8, 23, 28, 0.82);
-  --bg-panel-2:    rgba(11, 31, 37, 0.94);
-
-  /* Text */
-  --text:          #f5fbf9;
-  --text-soft:     #b8c7c3;
-  --text-muted:    #7f918d;
-  --text-faint:    #5d6d69;
-
-  /* Accents */
-  --accent:        #29abe2;   /* ByteRay cyan */
-  --accent-2:      #1f74e6;
-  --accent-3:      #f4b35c;   /* amber */
-  --danger:        #ff6b6b;
-
-  /* Lines / effects */
-  --line:          rgba(255, 255, 255, 0.10);
-  --line-strong:   rgba(41, 171, 226, 0.34);
-  --shadow:        0 24px 80px rgba(0, 0, 0, 0.38);
-  --glow:          0 0 40px rgba(41, 171, 226, 0.28);
-
-  --font-display: "Space Grotesk", -apple-system, system-ui, sans-serif;
-  --font-body:    "Inter", -apple-system, system-ui, sans-serif;
-  --font-mono:    "JetBrains Mono", "SF Mono", "Menlo", monospace;
-
-  --easing: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: light;
+  --bg: #f7f4ec;
+  --bg-elevated: #efeadf;
+  --bg-panel: #fffdf8;
+  --text: #061b2c;
+  --text-soft: #44596b;
+  --text-muted: #556a7c;
+  --text-faint: #556a7c;
+  --title: #1e73a5;
+  --accent: #078fbd;
+  --accent-2: #244fc4;
+  --accent-3: #b66b27;
+  --line: rgba(9, 36, 58, .14);
+  --line-strong: rgba(9, 36, 58, .28);
+  --shadow: 0 8px 30px rgba(26, 44, 56, .08);
+  --font-display: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-body: "Manrope", "Avenir Next", "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  --easing: cubic-bezier(.22, 1, .36, 1);
 }
 
 * { box-sizing: border-box; }
@@ -44,13 +45,13 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(circle at 82% 8%, rgba(41, 171, 226, 0.18), transparent 34rem),
-    radial-gradient(circle at 14% 26%, rgba(41, 171, 226, 0.13), transparent 30rem),
-    linear-gradient(180deg, #030a0d, #051013 44%, #020608);
-  background-attachment: fixed;
+    radial-gradient(circle at 82% 4%, rgba(22, 180, 212, .08), transparent 34rem),
+    linear-gradient(125deg, rgba(255, 255, 255, .38), transparent 44rem),
+    var(--bg);
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 17px;
+  font-size: 16px;
+  font-optical-sizing: auto;
   line-height: 1.65;
   letter-spacing: -0.003em;
   -webkit-font-smoothing: antialiased;
@@ -61,7 +62,7 @@ body {
 a { color: var(--text); text-decoration: none; transition: color .2s var(--easing); }
 a:hover { color: var(--accent); }
 
-.container { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
+.container { max-width: 1160px; margin: 0 auto; padding: 0 40px; }
 
 .eyebrow {
   font-family: var(--font-mono);
@@ -76,28 +77,27 @@ a:hover { color: var(--accent); }
 .gold { color: var(--accent-3); }
 
 /* ============================================================
-   Sticky glass nav
+   Floating brand navigation
    ============================================================ */
 .nav {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 24px; left: clamp(12px, 3vw, 46px); right: clamp(12px, 3vw, 46px);
   z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 40px;
-  background: rgba(4, 12, 16, 0.62);
+  padding: 10px 28px;
+  min-height: 76px;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  background: rgba(247, 244, 236, .88);
   backdrop-filter: saturate(160%) blur(16px);
   -webkit-backdrop-filter: saturate(160%) blur(16px);
-  border-bottom: 1px solid var(--line);
+  border: 1px solid var(--line);
 }
 .nav-brand { display: flex; align-items: center; gap: 12px; }
-.nav-brand .name {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 16px;
-  letter-spacing: -0.01em;
-  color: var(--text);
-}
-.nav-brand .name b { color: var(--accent); font-weight: 600; }
+.nav-brand .name { font-family: "Cyberform", var(--font-body); font-size: 21px; letter-spacing: .06em; line-height: 1; }
+.nav-brand .byte { color: #0d5fa8; }
+.nav-brand .ray { color: #16b4d4; }
+.nav-brand .blog-label { color: var(--text-muted); font-family: var(--font-mono); font-size: 11px; border-left: 1px solid var(--line); padding-left: 14px; margin-left: 2px; }
 .nav-links { display: flex; gap: 28px; }
 .nav-links a {
   font-family: var(--font-mono);
@@ -116,20 +116,12 @@ a:hover { color: var(--accent); }
   padding: 180px 0 84px;
   border-bottom: 1px solid var(--line);
 }
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 52% 62% at 84% 46%, rgba(41, 171, 226, 0.22), transparent 66%),
-    radial-gradient(ellipse 30% 40% at 74% 54%, rgba(244, 179, 92, 0.08), transparent 60%);
-  z-index: 0;
-  pointer-events: none;
-}
 .hero .container { position: relative; z-index: 2; }
 .hero h1 {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: clamp(2.8rem, 5.4vw, 4.4rem);
+  color: var(--title);
   line-height: 1.02;
   letter-spacing: -0.03em;
   margin: 0 0 20px;
@@ -137,7 +129,7 @@ a:hover { color: var(--accent); }
 }
 .hero h1 .accent {
   color: var(--accent);
-  text-shadow: 0 0 32px rgba(41, 171, 226, 0.45);
+  font-style: italic;
 }
 .hero .lede {
   font-size: 1.18rem;
@@ -161,27 +153,22 @@ a:hover { color: var(--accent); }
 }
 
 /* ============================================================
-   Post list (glass cards)
+   Editorial post list
    ============================================================ */
-.post-list { list-style: none; margin: 36px 0 0; padding: 0; display: grid; gap: 18px; }
+.post-list { list-style: none; margin: 36px 0 0; padding: 0; display: grid; gap: 0; }
 
 .post-row {
   display: grid;
   grid-template-columns: 150px 1fr;
   gap: 28px;
-  padding: 28px 30px;
-  background: var(--bg-panel);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid var(--line);
-  border-radius: 18px;
+  padding: 32px 0;
+  background: transparent;
+  border-top: 1px solid var(--line);
   transition: border-color .25s var(--easing), transform .25s var(--easing), box-shadow .25s var(--easing);
 }
-.post-row:hover {
-  border-color: var(--line-strong);
-  transform: translateY(-3px);
-  box-shadow: var(--shadow), 0 0 0 1px rgba(41, 171, 226, 0.12), 0 22px 60px -30px rgba(41, 171, 226, 0.55);
-}
+.post-row:last-child { border-bottom: 1px solid var(--line); }
+.post-row:hover { border-color: var(--line-strong); }
+.post-body { min-width: 0; }
 
 .post-meta { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
 .post-meta time {
@@ -194,12 +181,12 @@ a:hover { color: var(--accent); }
 .post-title {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 1.32rem;
+  font-size: 1.65rem;
   line-height: 1.25;
   letter-spacing: -0.02em;
   margin: 0 0 8px;
 }
-.post-title a { color: var(--text); }
+.post-title a { color: var(--title); }
 .post-title a:hover { color: var(--accent); }
 .post-summary { margin: 0 0 16px; color: var(--text-soft); font-size: 0.98rem; }
 
@@ -211,9 +198,9 @@ a:hover { color: var(--accent); }
   font-size: 0.7rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--title);
   border: 1px solid var(--line-strong);
-  background: rgba(41, 171, 226, 0.08);
+  background: rgba(7, 143, 189, .06);
   border-radius: 999px;
   padding: 3px 11px;
 }
@@ -224,13 +211,13 @@ a:hover { color: var(--accent); }
   font-size: 0.74rem;
   letter-spacing: 0.01em;
   color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, .5);
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 3px 11px;
   transition: color .2s var(--easing), border-color .2s var(--easing);
 }
-.chip-author { color: var(--accent); border-color: var(--line-strong); background: rgba(41, 171, 226, 0.1); }
+.chip-author { color: var(--title); border-color: var(--line-strong); background: rgba(7, 143, 189, .06); }
 a.chip:hover { color: var(--text); border-color: var(--line-strong); }
 
 .empty { color: var(--text-muted); margin: 48px 0; font-family: var(--font-mono); }
@@ -251,6 +238,7 @@ a.chip:hover { color: var(--text); border-color: var(--line-strong); }
   font-size: clamp(2rem, 3.6vw, 3rem);
   line-height: 1.08;
   letter-spacing: -0.03em;
+  color: var(--title);
   margin: 0 0 16px;
   max-width: 24ch;
 }
@@ -277,13 +265,13 @@ a.chip:hover { color: var(--text); border-color: var(--line-strong); }
   font-weight: 600;
   font-size: 1.5rem;
   letter-spacing: -0.02em;
-  color: var(--text);
+  color: var(--title);
   margin: 2em 0 0.6em;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--line);
 }
-.post-content h3 { font-family: var(--font-display); font-weight: 600; color: var(--text); letter-spacing: -0.015em; }
-.post-content a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(41, 171, 226, 0.4); }
+.post-content h3 { font-family: var(--font-display); font-weight: 600; color: var(--title); letter-spacing: -0.015em; }
+.post-content a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(7, 143, 189, .4); }
 .post-content a:hover { text-decoration-color: var(--accent); }
 .post-content strong { color: var(--text); }
 .post-content pre {
@@ -300,7 +288,7 @@ a.chip:hover { color: var(--text); border-color: var(--line-strong); }
 }
 .post-content code { font-family: var(--font-mono); font-size: 0.88em; }
 .post-content :not(pre) > code {
-  background: rgba(41, 171, 226, 0.1);
+  background: rgba(7, 143, 189, .06);
   border: 1px solid var(--line);
   border-radius: 6px;
   padding: 1px 6px;
@@ -329,7 +317,7 @@ a.chip:hover { color: var(--text); border-color: var(--line-strong); }
 /* ============================================================
    Footer
    ============================================================ */
-.site-footer { border-top: 1px solid var(--line); background: rgba(3, 10, 13, 0.6); margin-top: 40px; }
+.site-footer { border-top: 1px solid var(--line); background: var(--bg-elevated); margin-top: 40px; }
 .site-footer .container { display: flex; align-items: center; justify-content: space-between; padding-top: 32px; padding-bottom: 32px; gap: 20px; flex-wrap: wrap; }
 .site-footer p { margin: 0; color: var(--text-faint); font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.04em; }
 .site-footer .mark { display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-family: var(--font-display); font-size: 14px; }
@@ -340,13 +328,7 @@ a.chip:hover { color: var(--text); border-color: var(--line-strong); }
    ============================================================ */
 .cta {
   border-top: 1px solid var(--line);
-  /* the panel tint fades out downwards so it meets the footer without an edge */
-  background:
-    radial-gradient(circle at 50% -10%, rgba(41, 171, 226, 0.14), transparent 26rem),
-    linear-gradient(180deg,
-      rgba(7, 18, 21, 0.72) 0%,
-      rgba(7, 18, 21, 0.42) 48%,
-      rgba(7, 18, 21, 0) 100%);
+  background: var(--bg-panel);
   padding: 72px 0 96px;
   text-align: center;
 }
@@ -364,8 +346,8 @@ a.chip:hover { color: var(--text); border-color: var(--line-strong); }
   place-items: center;
   border: 1px solid var(--line-strong);
   border-radius: 16px;
-  background: rgba(41, 171, 226, 0.08);
-  box-shadow: var(--glow);
+  background: rgba(7, 143, 189, .06);
+
 }
 
 .cta-mark svg {
@@ -379,6 +361,7 @@ a.chip:hover { color: var(--text); border-color: var(--line-strong); }
 }
 
 .cta h2 {
+  color: var(--title);
   font-family: var(--font-display);
   font-size: clamp(1.7rem, 3.4vw, 2.4rem);
   line-height: 1.15;
@@ -437,35 +420,41 @@ a.chip:hover { color: var(--text); border-color: var(--line-strong); }
 }
 
 /* keeps the button off the lede when no features are configured */
-.cta-lede + .cta-btn { margin-top: 52px; }
-
-.cta-btn {
-  display: inline-block;
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  color: var(--text);
-  padding: 13px 30px;
-  border-radius: 12px;
-  border: 1px solid var(--line-strong);
-  background: linear-gradient(180deg, rgba(41, 171, 226, 0.22), rgba(31, 116, 230, 0.24));
-  box-shadow: var(--glow);
-  transition: transform .2s var(--easing), border-color .2s var(--easing), background .2s var(--easing);
+.cta-lede + .cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-size: .76rem;
+  font-weight: 750;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: #fff;
+  min-height: 48px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  border: 1px solid var(--text);
+  background: var(--text);
+  transition: background .2s var(--easing), transform .2s var(--easing);
 }
+.cta-btn:hover { color: #fff; background: var(--accent-2); border-color: var(--accent-2); transform: translateY(-2px); }
 
-.cta-btn:hover {
-  transform: translateY(-1px);
-  border-color: var(--accent);
-  background: linear-gradient(180deg, rgba(41, 171, 226, 0.32), rgba(31, 116, 230, 0.34));
-}
+:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 5px; }
+.skip-link { position: fixed; top: -100px; left: 24px; z-index: 200; background: var(--text); color: #fff; padding: 12px 20px; border-radius: 12px; }
+.skip-link:focus { top: 12px; color: #fff; }
+.post-header .row { flex-wrap: wrap; }
+.post-header h1, .post-title, .post-content { overflow-wrap: anywhere; }
+.post-content img { max-width: 100%; height: auto; }
+.post-content pre { overflow-wrap: normal; }
 
 /* ============================================================
    Responsive
    ============================================================ */
 @media (max-width: 720px) {
   .container { padding: 0 22px; }
-  .nav { padding: 14px 22px; }
+  .nav { top: 12px; padding: 8px 16px; min-height: 64px; }
+  .nav-brand .name { font-size: 17px; }
+  .nav-brand .blog-label { display: none; }
   .nav-links { gap: 16px; }
   .post-row { grid-template-columns: 1fr; gap: 16px; }
   .post-meta { flex-direction: row; align-items: center; }
@@ -474,4 +463,16 @@ a.chip:hover { color: var(--text); border-color: var(--line-strong); }
   .hero { padding: 150px 0 64px; }
   .cta { padding: 56px 0 60px; }
   .cta-features { grid-template-columns: 1fr; gap: 24px; margin: 34px 0 32px; }
+}
+
+@media (max-width: 440px) {
+  .nav-brand { gap: 6px; }
+  .nav-links { gap: 10px; }
+  .nav-links a { font-size: 11px; letter-spacing: 0; }
+  .nav-brand .name { font-size: 14px; }
+  .post-meta { flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; }
 }
