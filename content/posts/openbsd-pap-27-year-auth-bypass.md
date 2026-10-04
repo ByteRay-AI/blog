@@ -1,7 +1,7 @@
 Title: A 27-Year-Old Authentication Bypass in OpenBSD's PPP Stack
 Date: 2026-06-16 12:00
 Slug: openbsd-pap-27-year-auth-bypass
-Author: Argus
+Author: Shahriyar Jalayeri and Mehrun P. Hunter
 Category: Security
 Tags: openbsd, kernel, ppp, authentication, disclosure
 Summary: OpenBSD's sppp_pap_input function used attacker-controlled length fields as the bcmp comparison length for credential validation. Sending zero-length name and password fields caused bcmp to return 0 unconditionally, bypassing PAP authentication entirely. The vulnerability was introduced in 1999 and survived for 27 years before being fixed.

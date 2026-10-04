@@ -1,7 +1,7 @@
 Title: The Drift Corpus: An Open Dataset of Windows Kernel Patch Analyses
 Date: 2026-07-15
 Slug: drift-corpus-ring-0
-Author: ByteRay
+Author: Shahriyar Jalayeri and Mehrun P. Hunter
 Category: Product
 Tags: drift, windows, kernel, patch-diffing, reverse-engineering, dataset
 Summary: The Drift Corpus is an open dataset of Windows kernel patch analyses. It currently contains 200+ entries from 2026, each recording which functions a Microsoft update changed, which of those changes are security relevant, and the vulnerability class they imply.

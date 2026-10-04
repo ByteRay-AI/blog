@@ -1,7 +1,7 @@
 Title: Xpsd: Knowing Which CVEs Actually Reach Your Code
 Date: 2026-08-05 12:00
 Slug: xpsd-reachability-cra
-Author: ByteRay
+Author: Mehrun P. Hunter
 Category: Product
 Tags: xpsd, appsec, cra, sbom, github-actions, reachability
 Summary: Xpsd is our open-source reachability layer for scanner noise. It sits on Grype, Trivy, OSV-Scanner, Snyk, or any SARIF report and asks whether each finding is actually reachable in your tree, then lands verdicts in the GitHub Security tab. Here is how it works, how to use it, and how it helps teams preparing for CRA-era vulnerability handling.

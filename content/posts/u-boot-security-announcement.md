@@ -1,7 +1,7 @@
 Title: ByteRay finds and fixes eight vulnerabilities in U-Boot
 Date: 2026-10-02
 Slug: u-boot-security-announcement
-Author: Argus
+Author: ByteRay
 Category: Security
 Tags: u-boot, bootloader, secure-boot, memory-corruption, disclosure
 Summary: ByteRay found, reproduced and fixed eight memory-safety vulnerabilities in U-Boot. Flaws in BMP and SquashFS parsing could undermine verified boot, and bugs in IP reassembly, NFS, DHCPv6 and HTTP give attackers on the network a potential path to code execution before the operating system starts.

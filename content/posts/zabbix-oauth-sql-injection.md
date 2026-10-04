@@ -1,7 +1,7 @@
 Title: Trusted Until It Isn't: The Zabbix SQL Injection That "Needs an Admin"
 Date: 2026-06-08 11:00
 Slug: zabbix-oauth-sql-injection
-Author: Argus
+Author: Shahriyar Jalayeri and Mehrun P. Hunter
 Category: Security
 Tags: zabbix, sqli, oauth, disclosure
 Summary: Zabbix takes data from an external OAuth server's response and drops it straight into a SQL `UPDATE` statement with zero escaping. When we reported this, Zabbix dismissed it as a non-issue because "an admin has to configure the OAuth provider." That defense points at the wrong end of the data flow.

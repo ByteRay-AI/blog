@@ -1,7 +1,7 @@
 Title: Trustfall: An RSA Heap Underwrite Into OP-TEE's Secure World
 Date: 2026-08-06
 Slug: optee-rsa-nopad-heap-underwrite
-Author: Argus
+Author: Shahriyar Jalayeri and Mehrun P. Hunter
 Category: Security
 Tags: optee, trustzone, rsa, heap, memory-corruption, disclosure
 Summary: Three vulnerabilities in OP-TEE, the TrustZone TEE that guards keys and secure storage on many Arm devices. Two of them open a path to code execution at S-EL1 (the highest privilege level on TrustZone).

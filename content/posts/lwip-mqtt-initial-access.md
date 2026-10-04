@@ -1,7 +1,7 @@
 Title: Initial access through embedded devices: a vulnerability in lwIP
 Date: 2026-09-30
 Slug: lwip-mqtt-initial-access
-Author: Argus
+Author: ByteRay
 Category: Security
 Tags: lwip, mqtt, heap-overflow, embedded, rce
 Summary: A heap overflow in lwIP's MQTT client (CVE-2026-87121) lets a malicious broker get code execution on a connecting device before MQTT authentication. It affects lwIP 2.0.1 through 2.2.1, and because lwIP ships inside many embedded SDKs, the bug can reach devices from dozens of vendors.
