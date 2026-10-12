@@ -8,7 +8,7 @@ Summary: wolfSSL's Silicon Labs ECC import took the coordinate size from the pee
 
 wolfSSL is the TLS library on a lot of small devices: modules, industrial boards, parts where the vendor already has a crypto engine and would rather not do P-256 in software. One of those engines is the Silicon Labs Secure Element. The port is off unless you build with `WOLFSSL_SILABS_SE_ACCEL`.
 
-We were reading the 5.0.1 tree and the import path on that port did not agree with itself. The encoded point says how long its coordinates are. The curve id says how long they are supposed to be. The buffer on the key object was sized for the second number, and the copy used the first.
+I was reading the 5.0.1 tree with Shahriyar Jalayeri, and the import path on that port did not agree with itself. The encoded point says how long its coordinates are. The curve id says how long they are supposed to be. The buffer on the key object was sized for the second number, and the copy used the first.
 
 ## The bug
 
@@ -21,7 +21,7 @@ err = wc_ecc_set_curve(key, keysize, curve_id);
 
 `wc_ecc_set_curve()` stops at `ECC_MAXSIZE`, which is 66. Under that, a named curve is selected by id. Nothing in that function asks whether `keysize` equals `dp->size`. Send a 133-byte point and ask for P-256, and you get `keysize == 66` on a curve whose coordinates are 32 bytes.
 
-The Silicon Labs branch then hands that 66 straight to the hardware import. On the master we diffed (`d95483fff`, the 5.9.2 line), a public import is:
+The Silicon Labs branch then hands that 66 straight to the hardware import. On the master I diffed (`d95483fff`, the 5.9.2 line), a public import is:
 
 ```c
 #elif defined(WOLFSSL_SILABS_SE_ACCEL)
@@ -47,13 +47,13 @@ The field ends at 96. Y runs 36 bytes past it. Those 36 bytes are attacker-chose
 
 On wolfSSL 5.0.1 the same import also wrote the scalar. `wc_ecc_import_x963_ex()` called `silabs_ecc_import(key, keysize)`, and that version exported X, Y, and the scalar, the last one at offset `2 * keysize`. Three 66-byte writes are 198 bytes into a 96-byte field, 102 bytes past the end.
 
-Vault parts are a different size. There `ECC_MAX_CRYPTO_HW_SIZE` is 66 and `key_raw` is 198 bytes, so this particular point fits in the field. The comparison with `dp->size` is still missing. The overflow we reproduced is the build where the constant is 32.
+Vault parts are a different size. There `ECC_MAX_CRYPTO_HW_SIZE` is 66 and `key_raw` is 198 bytes, so this particular point fits in the field. The comparison with `dp->size` is still missing. The overflow I reproduced is the build where the constant is 32.
 
 `wc_ecc_check_key()` does not run in time to stop the copy. It is compiled in only with `WOLFSSL_VALIDATE_ECC_IMPORT`, and on this path it runs after `silabs_ecc_import()` has already written the field.
 
-## How we ran it
+## How I ran it
 
-We did not have the chip. The overflow is in wolfSSL's own copy, before the secure element is asked to do anything, so a stub of the Gecko SDK calls was enough. Randomness came from `/dev/urandom`. The hash calls used real SHA, because the DRBG health tests check the digest. Verify was stubbed. AES, ECDH, and key generation returned errors. Neither scenario in the test gets as far as record protection, so those stubs never mattered.
+I did not have the chip. The overflow is in wolfSSL's own copy, before the secure element is asked to do anything, so a stub of the Gecko SDK calls was enough. Randomness came from `/dev/urandom`. The hash calls used real SHA, because the DRBG health tests check the digest. Verify was stubbed. AES, ECDH, and key generation returned errors. Neither scenario in the test gets as far as record protection, so those stubs never mattered.
 
 The input is a TLS certificate chain. The client parses it through the ordinary handshake path.
 
@@ -90,17 +90,17 @@ allocated by ConfirmSignature   wolfcrypt/src/asn.c:13266
 
 The benign chain, same shape, 65-byte point, real keys, printed `ConfirmSignature return 0` and "Verified Peer's cert", with no sanitizer output.
 
-On 5.9.2 the public import no longer writes the scalar, so the same point is the 36-byte overflow rather than the 102-byte one. The length check in front of the copy was still absent. We confirmed that against `d95483fff` before wolfSSL's patch, and again in the `v5.9.4-stable` tag, which does not have the patch.
+On 5.9.2 the public import no longer writes the scalar, so the same point is the 36-byte overflow rather than the 102-byte one. The length check in front of the copy was still absent. I confirmed that against `d95483fff` before wolfSSL's patch, and again in the `v5.9.4-stable` tag, which does not have the patch.
 
-## What we sent, and what landed
+## What I sent, and what landed
 
-The patch we proposed put the bound in two places.
+The patch I proposed put the bound in two places.
 
 At the call in `wc_ecc_import_x963_ex()`, after `wc_ecc_set_curve()` succeeds, require `key->dp != NULL`, `keysize == key->dp->size`, and `keysize <= ECC_MAX_CRYPTO_HW_SIZE`. Otherwise return `ECC_BAD_ARG_E`. That rejects 66 against a P-256 curve before the hardware import runs.
 
 Then the same capacity check inside every function in `silabs_ecc.c` that writes `key_raw`: `silabs_ecc_import`, `silabs_ecc_import_private`, `silabs_ecc_make_key`, `silabs_ecc_sig_to_rs`, and `silabs_ecc_import_private_raw`. The call-site check is not enough on its own. `wc_ecc_import_private_key_ex()` reaches the same buffer with `key->dp->size`, and a P-521 `dp->size` is 66. On the 96-byte field that overflows even when the key is well formed.
 
-We looked at fixing `wc_ecc_set_curve()` so a named curve would refuse a mismatched size for every caller. That function is shared by every ECC build, not just Silicon Labs. A bad size on this one port did not justify changing the curve lookup for everyone else. The ATECC port already had its own length check against `pubkey_raw`. Matching that, and keeping the check on the Silicon Labs side, was the smaller change.
+I looked at fixing `wc_ecc_set_curve()` so a named curve would refuse a mismatched size for every caller. That function is shared by every ECC build, not just Silicon Labs. A bad size on this one port did not justify changing the curve lookup for everyone else. The ATECC port already had its own length check against `pubkey_raw`. Matching that, and keeping the check on the Silicon Labs side, was the smaller change.
 
 wolfSSL did the port half, which is the half that stops the write. PR [11530](https://github.com/wolfSSL/wolfssl/pull/11530), commit `c46e620c2a70677da7694cf06d241444c6cfe6bb`, does not touch `ecc.c`. In `silabs_ecc_import()` the size is rejected before the descriptor is pointed at `key_raw`:
 
@@ -112,7 +112,9 @@ if (keysize == 0 || keysize > ECC_MAX_CRYPTO_HW_SIZE ||
 
 `ECC_BAD_ARG_E` is `-170`. A 133-byte point on P-256 fails that test on `keysize != dp->size`. A P-384 or P-521 key on the non-Vault field fails it on `ECC_MAX_CRYPTO_HW_SIZE`. `silabs_ecc_make_key()` now takes its size from `dp->size` and applies the same limit, and `silabs_ecc_export_public()` refuses a curve that does not fit the field.
 
-We reviewed that against master and told them it covered the report. The pull request merged on 28 September 2026. It is not in the 5.9.4 tag, which was cut three days earlier. Until a release contains `c46e620`, the builds that need the workaround are the ones compiled with `WOLFSSL_SILABS_SE_ACCEL` on a non-Vault part. Turning the port off removes the copy. It also removes the hardware acceleration those builds were turned on for.
+wolfSSL describes the bug in [PR 11530](https://github.com/wolfSSL/wolfssl/pull/11530), and again in the comment above the check: the size comes from the imported point, the curve comes from `key->dp`, and a size that disagrees with the curve writes past `key_raw`. That comment is at [`silabs_ecc.c` lines 249-256](https://github.com/wolfSSL/wolfssl/blob/c46e620c2a70677da7694cf06d241444c6cfe6bb/wolfcrypt/src/port/silabs/silabs_ecc.c#L249-L256).
+
+I reviewed the patch against master and wrote back the same day, 23 September, that it covered the report. The pull request merged on 28 September 2026. On 9 October David Garske wrote that it had been merged and closed the ticket. The fix is not in the 5.9.4 tag, which was cut three days before the merge. Until a release contains `c46e620`, the builds that need the workaround are the ones compiled with `WOLFSSL_SILABS_SE_ACCEL` on a non-Vault part. Turning the port off removes the copy. It also removes the hardware acceleration those builds were turned on for.
 
 wolfSSL thanked ByteRay for the reports in PR [11606](https://github.com/wolfSSL/wolfssl/pull/11606). That pull request is a separate batch. The Silicon Labs fix is 11530.
 
